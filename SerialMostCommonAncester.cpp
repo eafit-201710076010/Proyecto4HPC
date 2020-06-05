@@ -1,7 +1,9 @@
+#include <omp.h>
 #include <iostream>
 #include <fstream>
 #include <stdlib.h>
 #include <vector>
+#include <string>
 
 using namespace std;
 
@@ -56,7 +58,7 @@ vector <char> commonAncestor(vector<vector<char> > &matrix){
 vector<vector<char> > dnaMatrix(string infile){
     string line;
     int col;
-    ifstream MyReadFile(infile);
+    ifstream MyReadFile(infile.c_str());
     vector<vector<char> > output;
     while (getline (MyReadFile, line)) {
         col = line.length();
@@ -79,9 +81,11 @@ void printVector(vector<char> &vector, ofstream &file){
 }
 
 int main() {
+  const double t0 = omp_get_wtime();
+
     ofstream outputFile;
     outputFile.open("selectedAncestors.txt");
-    vector<vector<char>> datasetMatrix;
+    vector<vector<char> > datasetMatrix;
     vector<char> output;
 
     //dataset 1
@@ -108,5 +112,8 @@ int main() {
     printVector(output, outputFile);
     outputFile.close();
 
-    return 0;
+    
+   const double t1 = omp_get_wtime();
+    printf("Time(sec): %f\n", t1 - t0);
+    //    return 0;
 }
