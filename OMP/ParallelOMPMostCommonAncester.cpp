@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <vector>
 #include <string>
+#include <bits/stdc++.h>
 
 using namespace std;
 
@@ -17,21 +18,22 @@ vector <char> commonAncestor(vector<vector<char> > &matrix){
     vector<int> T(m, 0.0);
 
     //fill nitrogenous bases vectors
+    omp_set_num_threads(64);
+    #pragma omp parallel for
     for(int i =0; i<m; i++){
-        #pragma omp parallel for
         for(int j =0; j<n; j++){
             if(matrix[j][i]=='A'){
                 #pragma omp atomic
-                A[i]++;
+	         A[i]++;
             } else if(matrix[j][i]=='C'){
-                #pragma omp atomic
-                C[i]++;
+                #pragma omp atomic 
+		  C[i]++;
             } else if(matrix[j][i]=='G'){
                 #pragma omp atomic
-                G[i]++;
+	          G[i]++;
             } else {
-                #pragma omp atomic
-                T[i]++;
+               #pragma omp atomic
+	          T[i]++;
             }
         }
 	
@@ -39,8 +41,10 @@ vector <char> commonAncestor(vector<vector<char> > &matrix){
     
     //consensus vector
     vector<char> consensus(m, 0.0);
+    #pragma omp parallel 
+    {
     int max;
-    #pragma omp parallel for private(max)
+    #pragma omp for
     for(int i =0; i< m ; i++){
         max = A[i];
         consensus[i]= 'A';
@@ -56,6 +60,7 @@ vector <char> commonAncestor(vector<vector<char> > &matrix){
              max = T[i];
              consensus[i]= 'T';
         }
+    }
     }
     return consensus;
 
