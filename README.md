@@ -5,7 +5,7 @@ Proyecto HPC ST0263
 
 ## Mateo Flórez Restrepo
 ## Laura Sanchez Cordoba
-## Santiago Zapata
+## Santiago Arturo Zapata Chacon
 
 # Proyecto HPC : Finding a most likely common ancestor 
 
