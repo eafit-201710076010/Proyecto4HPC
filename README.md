@@ -102,3 +102,5 @@ A continuación se muestran tablas de los resultados tras medir el tiempo de eje
 Si bien el comportamiento es el mismo se puede ver la gran disminución entiempos de ejecución.
 
 ### Videos
+
+[Santiago Arturo Zapata Chacón](https://youtu.be/NeIknaStScE)
