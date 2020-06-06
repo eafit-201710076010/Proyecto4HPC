@@ -5,7 +5,6 @@
 #include <vector>
 #include <string>
 #include <bits/stdc++.h>
-
 using namespace std;
 
 
@@ -18,22 +17,16 @@ vector <char> commonAncestor(vector<vector<char> > &matrix){
     vector<int> T(m, 0.0);
 
     //fill nitrogenous bases vectors
-    omp_set_num_threads(64);
-    #pragma omp parallel for
     for(int i =0; i<m; i++){
         for(int j =0; j<n; j++){
             if(matrix[j][i]=='A'){
-	       #pragma omp atomic
-	         A[i]++;
+                A[i]++;
             } else if(matrix[j][i]=='C'){
-	      #pragma omp atomic 
-		  C[i]++;
+                C[i]++;
             } else if(matrix[j][i]=='G'){
-	      #pragma omp atomic
-	          G[i]++;
+                G[i]++;
             } else {
-	      #pragma omp atomic
-	          T[i]++;
+                T[i]++;
             }
         }
 	
@@ -41,10 +34,7 @@ vector <char> commonAncestor(vector<vector<char> > &matrix){
     
     //consensus vector
     vector<char> consensus(m, 0.0);
-    #pragma omp parallel 
-    {
-    int max;
-    #pragma omp for
+    int max=0;
     for(int i =0; i< m ; i++){
         max = A[i];
         consensus[i]= 'A';
@@ -60,7 +50,6 @@ vector <char> commonAncestor(vector<vector<char> > &matrix){
              max = T[i];
              consensus[i]= 'T';
         }
-    }
     }
     return consensus;
 
@@ -92,8 +81,7 @@ void printVector(vector<char> &vector, ofstream &file){
 }
 
 int main() {
-
-    const double t0 = omp_get_wtime();
+  const double t0 = omp_get_wtime();
 
     ofstream outputFile;
     outputFile.open("selectedAncestors.txt");
@@ -101,17 +89,17 @@ int main() {
     vector<char> output;
 
     //dataset 1
-    datasetMatrix = dnaMatrix("../dataset1.txt");
+    datasetMatrix = dnaMatrix("datasets/dataset16.txt");
     output = commonAncestor(datasetMatrix);
     printVector(output, outputFile);
 
     //dataset 2
-    datasetMatrix = dnaMatrix("../dataset2.txt");
+    datasetMatrix = dnaMatrix("datasets/dataset17.txt");
     output = commonAncestor(datasetMatrix);
     printVector(output, outputFile);
 
     //dataset 3
-    datasetMatrix = dnaMatrix("../dataset3.txt");
+    datasetMatrix = dnaMatrix("datasets/dataset18.txt");
     output = commonAncestor(datasetMatrix);
     printVector(output, outputFile);
 
