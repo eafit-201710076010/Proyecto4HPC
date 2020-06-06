@@ -1,15 +1,14 @@
-#include <omp.h>
+#include <mpi.h>
 #include <iostream>
 #include <fstream>
 #include <stdlib.h>
 #include <vector>
 #include <string>
 #include <bits/stdc++.h>
-
 using namespace std;
 
 
-vector <char> commonAncestor(vector<vector<char> > &matrix){
+vector <char> commonAncestor(vector<vector<char> > &matrix, int const myRank, int const nRanks){
     int m = matrix[0].size();   //columns
     int n = matrix.size();    // rows
     vector<int> A(m, 0.0);
@@ -17,23 +16,21 @@ vector <char> commonAncestor(vector<vector<char> > &matrix){
     vector<int> G(m, 0.0);
     vector<int> T(m, 0.0);
 
+    const int rowsPerProcess = double(m)/double(nRanks);
+    const int myFirstRow = 1 + int(rowsPerProcess*myRank);
+    const int myLastRow = 1 + int(rowsPerProcess*(myRank+1);
+
     //fill nitrogenous bases vectors
-    omp_set_num_threads(64);
-    #pragma omp parallel for
     for(int i =0; i<m; i++){
         for(int j =0; j<n; j++){
             if(matrix[j][i]=='A'){
-	       #pragma omp atomic
-	         A[i]++;
+                A[i]++;
             } else if(matrix[j][i]=='C'){
-	      #pragma omp atomic 
-		  C[i]++;
+                C[i]++;
             } else if(matrix[j][i]=='G'){
-	      #pragma omp atomic
-	          G[i]++;
+                G[i]++;
             } else {
-	      #pragma omp atomic
-	          T[i]++;
+                T[i]++;
             }
         }
 	
@@ -41,10 +38,7 @@ vector <char> commonAncestor(vector<vector<char> > &matrix){
     
     //consensus vector
     vector<char> consensus(m, 0.0);
-    #pragma omp parallel 
-    {
-    int max;
-    #pragma omp for
+    int max=0;
     for(int i =0; i< m ; i++){
         max = A[i];
         consensus[i]= 'A';
@@ -60,7 +54,6 @@ vector <char> commonAncestor(vector<vector<char> > &matrix){
              max = T[i];
              consensus[i]= 'T';
         }
-    }
     }
     return consensus;
 
@@ -92,8 +85,12 @@ void printVector(vector<char> &vector, ofstream &file){
 }
 
 int main() {
-
     const double t0 = omp_get_wtime();
+    
+    MPI_Init(&argc, &argv);
+    int myRank, nRanks;
+    MPI_Comm_rank(MPI_COMM_WORLD, &myRank);
+    MPI_Comm_size(MPI_COMM_WORLD, &nRanks);
 
     ofstream outputFile;
     outputFile.open("selectedAncestors.txt");
@@ -101,18 +98,18 @@ int main() {
     vector<char> output;
 
     //dataset 1
-    datasetMatrix = dnaMatrix("../dataset1.txt");
-    output = commonAncestor(datasetMatrix);
+    datasetMatrix = dnaMatrix("dataset1.txt");
+    output = commonAncestor(datasetMatrix, myRank, nRanks);
     printVector(output, outputFile);
 
     //dataset 2
-    datasetMatrix = dnaMatrix("../dataset2.txt");
-    output = commonAncestor(datasetMatrix);
+    datasetMatrix = dnaMatrix("dataset2.txt");
+    output = commonAncestor(datasetMatrix, myRank, nRanks);
     printVector(output, outputFile);
 
     //dataset 3
-    datasetMatrix = dnaMatrix("../dataset3.txt");
-    output = commonAncestor(datasetMatrix);
+    datasetMatrix = dnaMatrix("dataset3.txt");
+    output = commonAncestor(datasetMatrix, myRank, nRanks);
     printVector(output, outputFile);
 
     outputFile.close();
@@ -120,7 +117,7 @@ int main() {
     //process final dataset
     outputFile.open("output.txt");
     datasetMatrix = dnaMatrix("selectedAncestors.txt");
-    output = commonAncestor(datasetMatrix);
+    output = commonAncestor(datasetMatrix, myRank, nRanks);
     printVector(output, outputFile);
     outputFile.close();
 
