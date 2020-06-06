@@ -19,11 +19,11 @@ Yo, Mateo Flórez Restrepo realicé el análisis general del problema que permit
 
 ### Descripción
 
-*1. Problema o caso de estudio a resolver
+#### 1. Problema o caso de estudio a resolver
 
 A través del proceso evolutivo surgen diferentes especies cuyo ADN tiene algunas similitudes, lo que puede traducirse en que, en períodos históricos previos, hubo un ancestro común del que evolucionaron. Para hallar este ancestro (la posible cadena de ADN de este) se tienen varias cadenas homólogas que se desean analizar simultáneamente de manera que se encuentren las similitudes y llegar al ancestro común más probable.
 
-*2. Objetivo y alcance
+#### 2. Objetivo y alcance
 
 **Objetivo:** 
 Las cadenas homólogas de ADN se encuentran dispuestas en una matriz indicando las bases nitrogenadas que las componen, para analizar estas similitudes de la manera más eficiente, se propone la paralelización para hallar cuales son las bases que más se repiten al sumarlas por columnas. De los mayores valores calculados al final, se hallará la cadena del ancestro.   
@@ -31,13 +31,13 @@ Las cadenas homólogas de ADN se encuentran dispuestas en una matriz indicando l
 **Alcance:** 
 Paralelizar las columnas de las cadenas ADN cuyo resultado sea más veloz que la implementación secuencial a la hora de hallar el ancestro común.
 
-*3. Requerimientos técnicos
+#### 3. Requerimientos técnicos
 
 - Lenguaje programación: C++
 - Framework de paralelización OMP y/o MPI
 - Cluster HPC Colfax (Opción: procesador Intel Xeon Phi processor 7210 with 4-way hyper-threading)
 
-*4. Plan de Trabajo 
+#### 4. Plan de Trabajo 
 
 | Plan de trabajo |
 | --------------- |
