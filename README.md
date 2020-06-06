@@ -106,3 +106,5 @@ Si bien el comportamiento es el mismo se puede ver la gran disminución entiempo
 [Santiago Arturo Zapata Chacón](https://youtu.be/NeIknaStScE)
 
 [Laura Sánchez Córdoba](https://web.microsoftstream.com/video/86f3e95f-a981-4055-82ae-c62b087648e4)
+
+[Mateo Flórez Restrepo](https://web.microsoftstream.com/video/7676794e-fb48-4fa9-8359-9e040f4b31c7)
